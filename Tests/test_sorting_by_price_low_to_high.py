@@ -8,6 +8,8 @@ from ProjectSeleniumPython.Pages.CartPage import Cart
 
 
 
+
+
 t=.8
 
 @pytest.fixture(scope='module')

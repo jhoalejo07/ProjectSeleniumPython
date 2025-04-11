@@ -90,7 +90,7 @@ def test_negative_incorrect_format_email():
     try:
         newCustomer.EnterFirstName("Pedro")
         newCustomer.EnterLastName("Pascal")
-        newCustomer.EnterEmail("dldg14@gmail.com")
+        newCustomer.EnterEmail("dldg14gmail.com")
         newCustomer.EnterPassw("Grokuforever123")
         newCustomer.ConfirmPassw("Grokuforever123")
         newCustomer.PressButtonCreate()
