@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from ProjectSeleniumPython.Pages.Functions import Functions
 
-t = .8
+t = .2
 class CreateUsr(Functions):
 
     '''

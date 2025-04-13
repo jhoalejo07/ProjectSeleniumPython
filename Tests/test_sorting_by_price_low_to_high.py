@@ -31,7 +31,7 @@ def loading_magento():
 def test_sorting_by_price_low_to_high():
 
     selProduct.SortByPrices("Position", 2) # other options for p_type ("Text" ("Position", "Producto Name", "Price"), "Value" (0,1,2),"Position" )
-    f.Time(5)
+    #f.Time(5)
 
     # Extract all product prices
     price_elements = f.driver.find_elements(By.XPATH, "//span[@class='price']")
