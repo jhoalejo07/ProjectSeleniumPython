@@ -34,7 +34,7 @@ class Functions():
     def OpenBrowser(self, p_URL, p_time):
         self.driver.get(p_URL)
         self.driver.maximize_window()
-        self.driver.implicitly_wait(10)
+        self.driver.implicitly_wait(5)
         print("Page open: " + str(p_URL))
         self.Time(p_time)
 
