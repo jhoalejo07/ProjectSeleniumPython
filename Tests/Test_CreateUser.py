@@ -162,34 +162,41 @@ def test_negative_Last_name_long():
 @pytest.mark.usefixtures("setup_newcustomer_screen")
 def test_negative_incorrect_format_email():
     try:
-        newCustomer.EnterFirstName("Pedro")
-        newCustomer.EnterLastName("Pascal")
-        newCustomer.EnterEmail("dldg653@gmail.com")
-        newCustomer.EnterPassw("Grokuforever123")
-        newCustomer.ConfirmPassw("Grokuforever123")
+        newCustomer.EnterFirstName(fe.readData(path_excel,"magento_new_users",7,2))
+        newCustomer.EnterLastName(fe.readData(path_excel,"magento_new_users",7,3))
+        newCustomer.EnterEmail(fe.readData(path_excel,"magento_new_users",7,4))
+        newCustomer.EnterPassw(fe.readData(path_excel,"magento_new_users",7,5))
+        newCustomer.ConfirmPassw(fe.readData(path_excel,"magento_new_users",7,6))
         newCustomer.PressButtonCreate()
 
         errorText = f.Sel_by_Xpath("//div[@for='email_address'][contains(@id,'address-error')][contains(.,'Please enter a valid email address (Ex: johndoe@domain.com).')]", t).text
         allure.attach(f.driver.get_screenshot_as_png(), name="incorrect_format_email", attachment_type=AttachmentType.PNG)
     except AttributeError as ex:
+        fe.writeData(path_excel, "magento_new_users", 7, 7, "Failed - It doesn't look like an invalid email")
         assert False, "It doesn't look like an invalid email"
 
     assert errorText == "Please enter a valid email address (Ex: johndoe@domain.com).", "IT IS A VALID EMAIL"
+    fe.writeData(path_excel, "magento_new_users", 7, 7, "Pass - email is not valid!!")
+
+
 
 @pytest.mark.negative
 @pytest.mark.usefixtures("log_on_failure")
 @pytest.mark.usefixtures("setup_newcustomer_screen")
 def test_negative_password_Strength():
     try:
-        newCustomer.EnterPassw("Groku")
+        newCustomer.EnterPassw(fe.readData(path_excel,"magento_new_users",8,5))
 
         errorText = f.Sel_by_Xpath("//*[@id='password-strength-meter-label']", t).text
         allure.attach(f.driver.get_screenshot_as_png(), name="weak_pass_Strength",
                       attachment_type=AttachmentType.PNG)
         if errorText == "No Password" or errorText == "Weak":
             assert True, "Not accurate Password"
+            fe.writeData(path_excel, "magento_new_users", 8, 7, "Pass - Not accurate Password!")
         else:
+            fe.writeData(path_excel, "magento_new_users", 8, 7, "Failed - Accurate Password!")
             assert False, "Accurate Password"
+
 
     except AttributeError as ex:
         assert False, "textbox is not found"
@@ -200,7 +207,8 @@ def test_negative_password_Strength():
 @pytest.mark.usefixtures("setup_newcustomer_screen")
 def test_positive_password_Strength():
     try:
-        newCustomer.EnterPassw("Grokuforever123")
+
+        newCustomer.EnterPassw(fe.readData(path_excel, "magento_new_users", 9, 5))
 
         errorText = f.Sel_by_Xpath("//*[@id='password-strength-meter-label']", t).text
         allure.attach(f.driver.get_screenshot_as_png(), name="strong_pass_Strength",
@@ -208,7 +216,9 @@ def test_positive_password_Strength():
 
         if errorText == "Strong" or errorText == "Very Strong":
             assert True, "Not accurate Password"
+            fe.writeData(path_excel, "magento_new_users", 9, 7, "Pass - Accurate Password!")
         else:
+            fe.writeData(path_excel, "magento_new_users", 9, 7, "Failed - Not accurate Password!")
             assert False, "Accurate Password"
 
     except AttributeError as ex:
@@ -219,11 +229,11 @@ def test_positive_password_Strength():
 @pytest.mark.usefixtures("setup_newcustomer_screen")
 def test_negative_password_confirm_diff():
     try:
-        newCustomer.EnterFirstName("Pedro")
-        newCustomer.EnterLastName("Pascal")
-        newCustomer.EnterEmail("dldg653@gmail.com")
-        newCustomer.EnterPassw("Grokuforever123")
-        newCustomer.ConfirmPassw("Grokuforever123")
+        newCustomer.EnterFirstName(fe.readData(path_excel,"magento_new_users",10,2))
+        newCustomer.EnterLastName(fe.readData(path_excel,"magento_new_users",10,3))
+        newCustomer.EnterEmail(fe.readData(path_excel,"magento_new_users",10,4))
+        newCustomer.EnterPassw(fe.readData(path_excel,"magento_new_users",10,5))
+        newCustomer.ConfirmPassw(fe.readData(path_excel,"magento_new_users",10,6))
         newCustomer.PressButtonCreate()
 
         errorText = f.Sel_by_Xpath("//div[@for='password-confirmation'][contains(.,'Please enter the same value again.')]", t).text
@@ -231,9 +241,11 @@ def test_negative_password_confirm_diff():
                       attachment_type=AttachmentType.PNG)
 
     except AttributeError as ex:
+        fe.writeData(path_excel, "magento_new_users", 10, 7, "Failed - Password and confirm are the same")
         assert False, "Password and confirm are the same"
 
     assert errorText == "Please enter the same value again.", "Password and confirm are the same"
+    fe.writeData(path_excel, "magento_new_users", 10, 7, "Pass - Password and confirm are different")
 
 def random_char(char_num):
     return ''.join(random.choice(string.ascii_letters) for _ in range(char_num))
