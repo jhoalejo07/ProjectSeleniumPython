@@ -8,14 +8,17 @@ class CreateUsr(Functions):
      Composition is generally preferred over inheritance for building page objects, as it leads to more flexible and
       maintainable code. For that reason, an instance of Functions is passed to SelectProduct as a dependency.
     '''
-    FIRST_NAME = "//input[contains(@name,'firstname')]"
-    LAST_NAME = "//input[contains(@name,'lastname')]"
-    EMAIL = "//input[@type='email'][contains(@id,'address')]"
-    PASSWORD = "//input[@title='Password']"
-    CONFIRM_PASS = "//input[contains(@name,'password_confirmation')]"
-    CREATE_BUTTON = "//button[@type='submit'][contains(.,'Create an Account')]"
+
     def __init__(self, functions_instance):
         self.f = functions_instance  # Store the existing Functions instance
+        self.FIRST_NAME = "//input[contains(@name,'firstname')]"
+        self.LAST_NAME = "//input[contains(@name,'lastname')]"
+        self.EMAIL = "//input[@type='email'][contains(@id,'address')]"
+        self.PASSWORD = "//input[@title='Password']"
+        self.CONFIRM_PASS = "//input[contains(@name,'password_confirmation')]"
+        self.CREATE_BUTTON = "//button[@type='submit'][contains(.,'Create an Account')]"
+
+
     def EnterFirstName(self, p_firstName):
         self.f.move_to_element_by_xpath(self.FIRST_NAME, t)
         self.f.f_text_Mix("xpath",self.FIRST_NAME, p_firstName, t)

@@ -8,7 +8,43 @@ from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.chrome.service import Service
 class Functions():
+    """
+    A utility class to simplify Selenium WebDriver interactions for UI test automation with Pytest.
 
+    This class provides a reusable library of common Selenium WebDriver operations
+    for use in Pytest-based UI test automation. It encapsulates browser initialization,
+    element selection, interactions (clicks, typing, drag & drop, etc.), and waiting logic.
+
+    Usage:
+        1. Create an instance by providing the path to your ChromeDriver executable.
+        2. Use methods like `OpenBrowser`, `click_on_element_by_xpath`, `f_text_Mix`, etc.
+        3. Combine these methods in your Pytest test cases for efficient and structured automation.
+
+    Note:
+        This code is intended for private use only. Do not publish or distribute it without permission.
+
+    Attributes:
+        driver (webdriver.Chrome): The Selenium Chrome WebDriver instance.
+
+
+    Methods:
+        OpenBrowser(p_URL, p_time): Opens a URL in a Chrome browser and waits.
+        teardown_function(): Closes the browser.
+        Time(p_time): Pauses execution for a given time in seconds.
+        click_on_element_by_xpath(p_xpath, p_time): Clicks an element by XPath.
+        move_to_element_by_xpath(p_xpath, p_time): Moves to an element by XPath.
+        move_on_element_and_click_by_xpath(p_xpath, p_time): Moves to and clicks an element.
+        Sel_by_Xpath(p_selector, p_time): Finds an element by XPath.
+        Sel_by_ID(p_selector): Finds an element by ID.
+        f_Select_By_Xpath(p_Xpath, p_type, p_value, p_Time): Selects from dropdown by XPath.
+        f_Select_By_ID(p_id, p_type, p_value, p_Time): Selects from dropdown by ID.
+        f_text_Mix(p_type, p_selector, p_text, p_time): Types into a field (XPath or ID).
+        f_Click_Mix(p_type, p_selector, p_time): Clicks an element (XPath or ID).
+        f_DoubleClick_Mix(p_type, p_selector, p_time): Double-clicks an element.
+        f_RightClick_Mix(p_type, p_selector, p_time): Right-clicks an element.
+        f_DragandDropClick_Mix(p_type, p_sel_orig, p_sel_dest, p_time): Drags and drops an element to a target.
+        f_DragandDrop_X_Y_Mix(p_type, p_sel, p_x, p_y, p_time): Drags an element by X and Y offsets.
+    """
     def __init__(self, p_driverPath):
          # Use a raw string or double backslashes for the path
         chrome_driver_path = p_driverPath #r"C:\SeleniumDrivers\chromedriver.exe"  # or "C:\\SeleniumDrivers\\chromedriver.exe"

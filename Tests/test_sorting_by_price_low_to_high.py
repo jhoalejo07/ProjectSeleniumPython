@@ -3,11 +3,6 @@ from selenium.webdriver.common.by import By
 from ProjectSeleniumPython.Pages.Functions import Functions
 from ProjectSeleniumPython.Pages.Menu import Menu
 from ProjectSeleniumPython.Pages.SelectProduct import SelectProduct
-from ProjectSeleniumPython.Pages.Product import Product
-from ProjectSeleniumPython.Pages.CartPage import Cart
-
-
-
 
 
 t=.8
@@ -25,6 +20,7 @@ def loading_magento():
     print("Login into admin-demo.magento.com ")
     yield
     print("log off from admin-demo.magento.com")
+    f.teardown_function()
 
 
 @pytest.mark.usefixtures("loading_magento")
