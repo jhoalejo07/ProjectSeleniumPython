@@ -25,7 +25,7 @@ class SelectProduct(Functions):
 
     # METHODS to perform actions on those elements
     def SelectJunoJacket(self):
-        self.f.click_on_element_by_xpath(self.JUNO_JACKET, t)
+        self.f.click_on_element("xpath", self.JUNO_JACKET, t)
 
     def SortByPrices(self, p_type, p_value):
-        self.f.f_Select_By_Xpath(self.SORTER, p_type, p_value, t)
+        self.f.Select_Combo("xpath", self.SORTER, p_type, p_value, t)

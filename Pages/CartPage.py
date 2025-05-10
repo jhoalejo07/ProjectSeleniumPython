@@ -13,7 +13,7 @@ class Cart(Functions):
     def __init__(self, functions_instance):
         self.f = functions_instance  # Store the existing Functions instance
     def modifyQuantity(self, p_quantity):
-        self.f.f_text_Mix("xpath", self.SHOPPING_CART_QTY, p_quantity, t)
+        self.f.input_text("xpath", self.SHOPPING_CART_QTY, p_quantity, t)
 
     def ProceedToCheckout(self):
-        self.f.move_on_element_and_click_by_xpath(self.PROCEED_BUTTON, t)
+        self.f.move_on_element_and_click("xpath", self.PROCEED_BUTTON, t)

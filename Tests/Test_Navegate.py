@@ -1,4 +1,5 @@
 import pytest
+import time
 from ProjectSeleniumPython.Pages.Functions import Functions
 from ProjectSeleniumPython.Pages.Menu import Menu
 from ProjectSeleniumPython.Pages.SelectProduct import SelectProduct
@@ -16,7 +17,7 @@ def setup_login_magento():
     p_driverPath = r"C:\SeleniumDrivers\chromedriver.exe"
 
     f = Functions(p_driverPath)
-    f.OpenBrowser("https://magento.softwaretestingboard.com/", t)
+    f.openBrowser("https://magento.softwaretestingboard.com/", t)
 
     menu = Menu(f)
     selProduct = SelectProduct(f)
@@ -41,6 +42,8 @@ def test_navegate():
     cart.ProceedToCheckout()
     newusr.EnterFirstName("Pedro")
     newusr.EnterLastName("Pascal")
-    f.Time(t)
+
+    # f.Time(t)
+    time.sleep(t)
     f.teardown_function()
 

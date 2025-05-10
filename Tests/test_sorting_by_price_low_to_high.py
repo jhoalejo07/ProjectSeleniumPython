@@ -12,7 +12,7 @@ def loading_magento():
     global f, selProduct
 
     f = Functions(r"C:\SeleniumDrivers\chromedriver.exe")
-    f.OpenBrowser("https://magento.softwaretestingboard.com/women/tops-women/jackets-women.html", t)
+    f.openBrowser("https://magento.softwaretestingboard.com/women/tops-women/jackets-women.html", t)
 
 
     selProduct = SelectProduct(f)

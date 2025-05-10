@@ -29,7 +29,7 @@ class Product(Functions):
        self.select_options_and_add_to_cart(self.JUNO_JACKET_COLOR_BLUE_id, self.JUNO_JACKET_SIZE_M_id)
 
     def select_options_and_add_to_cart(self, p_color, p_size):
-        self.f.move_on_element_and_click_by_xpath(p_color, t)
-        self.f.move_on_element_and_click_by_xpath(p_size, t)
-        self.f.move_on_element_and_click_by_xpath(self.ADD_TO_CART_BTN, t)
-        self.f.move_on_element_and_click_by_xpath(self.SHOPPING_CART_BTN, t)
+        self.f.move_on_element_and_click("xpath", p_color, t)
+        self.f.move_on_element_and_click("xpath", p_size, t)
+        self.f.move_on_element_and_click("xpath", self.ADD_TO_CART_BTN, t)
+        self.f.move_on_element_and_click("xpath", self.SHOPPING_CART_BTN, t)

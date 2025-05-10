@@ -24,6 +24,6 @@ class Menu(Functions):
 
      #METHODS to perform actions on those elements
     def NavegateToWomenJacket(self):
-        self.f.move_to_element_by_xpath(self.MENU_WOMEN, t)
-        self.f.move_to_element_by_xpath(self.WOMEN_TOPS, t)
-        self.f.move_on_element_and_click_by_xpath(self.WOMEN_TOPS_JACKETS, t)
+        self.f.move_to_element("xpath", self.MENU_WOMEN, t)
+        self.f.move_to_element("xpath", self.WOMEN_TOPS, t)
+        self.f.move_on_element_and_click("xpath", self.WOMEN_TOPS_JACKETS, t)
