@@ -10,15 +10,14 @@ from selenium.webdriver.chrome.service import Service
 
 
 class Functions:
-
     def __init__(self, p_driverPath):
-        # Use a raw string or double backslashes for the path
-        chrome_driver_path = p_driverPath  #r"C:\SeleniumDrivers\chromedriver.exe"  # or "C:\\SeleniumDrivers\\chromedriver.exe"
+        """
+        Initializes the Selenium WebDriver using the provided ChromeDriver path.
 
-        # Set up the Service object with the correct path
-        service = Service(chrome_driver_path)
-
-        # Initialize the WebDriver with the service and options
+        Args:
+            p_driverPath (str): The path to the ChromeDriver executable.
+        """
+        service = Service(p_driverPath)
         options = webdriver.ChromeOptions()
         options.add_argument('--ignore-certificate-errors')
         options.add_argument('--disable-blink-features=AutomationControlled')
@@ -26,10 +25,20 @@ class Functions:
         self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
 
     def teardown_function(self):
+        """
+        Closes the browser and ends the test session.
+        """
         print("End of test")
         self.driver.close()
 
     def openBrowser(self, p_URL, p_time):
+        """
+        Opens a URL in the browser, maximizes the window, and waits.
+
+        Args:
+            p_URL (str): URL to open.
+            p_time (int): Time to wait after opening (in seconds).
+        """
         self.driver.get(p_URL)
         self.driver.maximize_window()
         self.driver.implicitly_wait(5)
@@ -37,7 +46,14 @@ class Functions:
         time.sleep(p_time)
 
     def move_to_element(self, p_type, p_selector, p_time):
+        """
+        Scrolls to and hovers over an element.
 
+        Args:
+            p_type (str): Type of selector ('xpath' or 'id').
+            p_selector (str): Selector value.
+            p_time (int): Timeout in seconds.
+        """
         try:
             if p_type == "xpath":
                 element = WebDriverWait(self.driver, p_time).until(
@@ -49,12 +65,19 @@ class Functions:
             self.driver.execute_script("arguments[0].scrollIntoView();", element)
             ActionChains(self.driver).move_to_element(element).perform()
             print("Moving to {} ".format(p_selector))
-        except TimeoutException as ex:
-            print("It's not possible to move to the element, it's not available" + p_selector)
-            # self.Time(p_time)
+        except TimeoutException:
+            print("It's not possible to move to the element, it's not available: " + p_selector)
             time.sleep(p_time)
 
     def click_on_element(self, p_type, p_selector, p_time):
+        """
+        Clicks on a web element after waiting for it to be clickable.
+
+        Args:
+            p_type (str): Type of selector ('xpath' or 'id').
+            p_selector (str): Selector value.
+            p_time (int): Timeout in seconds.
+        """
         try:
             if p_type == "xpath":
                 element = WebDriverWait(self.driver, p_time).until(EC.element_to_be_clickable((By.XPATH, p_selector)))
@@ -64,12 +87,19 @@ class Functions:
             element.click()
             print("Clicking on {} ".format(p_selector))
 
-        except TimeoutException as ex:
-            print("It's not possible to click on the element, it's not available " + p_selector)
-            # self.Time(p_time)
+        except TimeoutException:
+            print("It's not possible to click on the element, it's not available: " + p_selector)
             time.sleep(p_time)
 
     def move_on_element_and_click(self, p_type, p_selector, p_time):
+        """
+        Moves to an element and clicks on it.
+
+        Args:
+            p_type (str): Type of selector ('xpath' or 'id').
+            p_selector (str): Selector value.
+            p_time (int): Timeout in seconds.
+        """
         try:
             if p_type == "xpath":
                 element = WebDriverWait(self.driver, p_time).until(
@@ -77,18 +107,29 @@ class Functions:
             else:
                 element = WebDriverWait(self.driver, p_time).until(
                     EC.visibility_of_element_located((By.ID, p_selector)))
+
             self.driver.execute_script("arguments[0].scrollIntoView();", element)
             ActionChains(self.driver).move_to_element(element).perform()
+
             element = WebDriverWait(self.driver, p_time).until(EC.element_to_be_clickable((By.XPATH, p_selector)))
             element.click()
             print("Moving and Clicking on {} ".format(p_selector))
 
-        except TimeoutException as ex:
-            print("It's not possible to move and click on the element, it's not available" + p_selector)
-            # self.Time(p_time)
+        except TimeoutException:
+            print("It's not possible to move and click on the element, it's not available: " + p_selector)
             time.sleep(p_time)
 
     def Select_Combo(self, p_type, p_selector, p_type_sel, p_value, p_time):
+        """
+        Selects an option from a dropdown.
+
+        Args:
+            p_type (str): Type of selector ('xpath' or 'id').
+            p_selector (str): Selector value.
+            p_type_sel (str): Selection type ('Text', 'Value', or 'Index').
+            p_value (str|int): Value to select (text, value, or index).
+            p_time (int): Timeout in seconds.
+        """
         try:
             if p_type == "xpath":
                 element = WebDriverWait(self.driver, p_time).until(
@@ -96,10 +137,9 @@ class Functions:
             else:
                 element = WebDriverWait(self.driver, p_time).until(
                     EC.visibility_of_element_located((By.ID, p_selector)))
+
             self.driver.execute_script("arguments[0].scrollIntoView();", element)
             ActionChains(self.driver).move_to_element(element).perform()
-
-            #combo = self.driver.find_element(By.XPATH, p_Xpath)
 
             sort = Select(element)
             if p_type_sel == "Text":
@@ -107,14 +147,23 @@ class Functions:
             elif p_type_sel == "Value":
                 sort.select_by_value(p_value)
             else:
-                sort.select_by_index(p_value)
+                sort.select_by_index(int(p_value))
 
             print("Sorting by {} ".format(p_type_sel))
 
-        except TimeoutException as ex:
-            print("Element not available " + p_selector)
+        except TimeoutException:
+            print("Element not available: " + p_selector)
 
     def input_text(self, p_type, p_selector, p_text, p_time):
+        """
+        Inputs text into a field.
+
+        Args:
+            p_type (str): Type of selector ('xpath' or 'id').
+            p_selector (str): Selector value.
+            p_text (str): Text to input.
+            p_time (int): Timeout in seconds.
+        """
         try:
             if p_type == "xpath":
                 val = self.return_element("xpath", p_selector, p_time)
@@ -125,28 +174,22 @@ class Functions:
             val.send_keys(p_text)
             print("Typing on {} the text -> {} ".format(p_selector, p_text))
 
-        except TimeoutException as ex:
-            print("Element not available to insert text" + p_selector)
-            # self.Time(p_time)
+        except TimeoutException:
+            print("Element not available to insert text: " + p_selector)
             time.sleep(p_time)
-        """
-        elif (p_type == "id"):
-            try:
-                val = self.return_element("id", p_selector, p_time)
-                val.clear()
-                val.send_keys(p_text)
-                print("Typing on {} the text -> {} ".format(p_selector, p_text))
-                self.Time(p_time)
 
-            except TimeoutException as ex:
-                print(ex.msg)
-                print("Element not available" + p_selector)
-                self.Time(p_time)
-        """
-
-    #use for locating a element and return it.
     def return_element(self, p_type, p_selector, p_time):
+        """
+        Returns a web element, scrolling and moving to it.
 
+        Args:
+            p_type (str): Type of selector ('xpath' or 'id').
+            p_selector (str): Selector value.
+            p_time (int): Timeout in seconds.
+
+        Returns:
+            WebElement: The located element, or None if not found.
+        """
         try:
             if p_type == "xpath":
                 element = WebDriverWait(self.driver, p_time).until(
@@ -165,5 +208,5 @@ class Functions:
 
         except TimeoutException as ex:
             print(ex.msg)
-            print("The element: " + p_selector + " it's not available")
+            print("The element: " + p_selector + " is not available")
             return None

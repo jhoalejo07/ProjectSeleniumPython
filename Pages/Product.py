@@ -21,15 +21,27 @@ class Product(Functions):
         self.SHOPPING_CART_BTN = "//a[contains(text(),'shopping cart')]"
         self.JUNO_JACKET_COLOR_BLUE_id = "option-label-color-93-item-50"
         self.JUNO_JACKET_SIZE_M_id = "option-label-size-143-item-168"
+        self.ADD_TO_CART_BTN_id = "product-addtocart-button"
 
     def select_juno_jacket_green_l(self):
-       self.select_options_and_add_to_cart(self.JUNO_JACKET_COLOR_GREEN, self.JUNO_JACKET_SIZE_L)
+        self.select_options_and_add_to_cart("xpath", self.JUNO_JACKET_COLOR_GREEN, self.JUNO_JACKET_SIZE_L)
 
     def select_juno_jacket_blue_m(self):
-       self.select_options_and_add_to_cart(self.JUNO_JACKET_COLOR_BLUE_id, self.JUNO_JACKET_SIZE_M_id)
+        self.select_options_and_add_to_cart("id", self.JUNO_JACKET_COLOR_BLUE_id, self.JUNO_JACKET_SIZE_M_id)
 
-    def select_options_and_add_to_cart(self, p_color, p_size):
-        self.f.move_on_element_and_click("xpath", p_color, t)
-        self.f.move_on_element_and_click("xpath", p_size, t)
-        self.f.move_on_element_and_click("xpath", self.ADD_TO_CART_BTN, t)
-        self.f.move_on_element_and_click("xpath", self.SHOPPING_CART_BTN, t)
+    def select_options_and_add_to_cart(self, p_type, p_color, p_size):
+        self.f.move_on_element_and_click(p_type, p_color, t)
+        self.f.move_on_element_and_click(p_type, p_size, t)
+        self.f.move_on_element_and_click(p_type, self.ADD_TO_CART_BTN, t)
+        self.f.move_on_element_and_click(p_type, self.SHOPPING_CART_BTN, t)
+
+    """
+    def add_to_cart(self, p_type="xpath"):
+        if p_type == "xpath":
+            self.f.move_on_element_and_click(p_type, self.ADD_TO_CART_BTN, t)
+            self.f.move_on_element_and_click(p_type, self.SHOPPING_CART_BTN, t)
+        else:
+            self.f.move_on_element_and_click(p_type, self.ADD_TO_CART_BTN_id, t)
+            self.f.move_on_element_and_click(p_type, self.SHOPPING_CART_BTN, t)
+
+    """

@@ -10,7 +10,7 @@ class Menu(Functions):
 
 
     This is a small example that maps the functionality for selecting Women → Tops → Jackets from the menu.
-    Each menu option requires its own locator and a corresponding method implementation.
+    Each menu option requires its own locators and a corresponding method implementation.
     """
 
     def __init__(self, functions):
