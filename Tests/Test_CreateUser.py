@@ -102,7 +102,7 @@ def test_negative_First_and_last_name_long():
         newCustomer.ConfirmPassw(fe.readData(path_excel, "magento_new_users", 4, 6))
         newCustomer.PressButtonCreate()
 
-        # errorText = f.Sel_by_Xpath("//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)'][contains(.,'First Name is not valid!" + "\n" + "Last Name is not valid!')]", t).text
+
         errorText = f.return_element("xpath", "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']["
                                               "contains(.,'First Name is not valid!" + "\n" + "Last Name is not "
                                                                                               "valid!')]", t).text
@@ -119,7 +119,7 @@ def test_negative_First_and_last_name_long():
 @pytest.mark.negative
 @pytest.mark.usefixtures("log_on_failure")
 @pytest.mark.usefixtures("setup_newcustomer_screen")
-def test_negative_Fisrt_name_long():
+def test_negative_First_name_long():
     try:
         firstname = random_char(301)
         newCustomer.EnterFirstName(firstname)

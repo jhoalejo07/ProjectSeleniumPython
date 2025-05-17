@@ -20,6 +20,10 @@ class Checkout_Shipping(Functions):
         self.COUNTRY = "//select[contains(@name,'country_id')]"
         self.PHONE = "//input[contains( @ name, 'telephone')]"
         self.EMAIL = "(//input[contains(@id,'customer-email')])[1]"
+        self.SP_TableRate = "//input[contains(@aria-labelledby,'label_method_bestway_tablerate label_carrier_bestway_tablerate')]"
+        self.SP_Fixed ="//input[contains(@aria-labelledby,'label_method_flatrate_flatrate label_carrier_flatrate_flatrate')]"
+        self.NEXT_BUTTON = "//button[contains(@data-role,'opc-continue')]"
+
 
 
     def EnterFirstName(self, p_firstName):
@@ -42,20 +46,28 @@ class Checkout_Shipping(Functions):
         self.f.move_to_element("xpath", self.STATE_PROV, t)
         self.f.Select_Combo("xpath", self.STATE_PROV, p_type_sel, p_value, t)
 
-    """
+    def EnterPostalCode(self, p_postalcode):
+        self.f.move_to_element("xpath",self.POSTALCODE, t)
+        self.f.input_text("xpath", self.POSTALCODE, p_postalcode, t)
+
+    def SelectCountry(self, p_type_sel, p_value):
+        self.f.move_to_element("xpath", self.COUNTRY, t)
+        self.f.Select_Combo("xpath", self.COUNTRY, p_type_sel, p_value, t)
+
+    def EnterTelephone(self, p_telephone):
+        self.f.move_to_element("xpath",self.PHONE, t)
+        self.f.input_text("xpath", self.PHONE, p_telephone, t)
 
     def EnterEmail(self, p_email):
         self.f.move_to_element("xpath",self.EMAIL, t)
         self.f.input_text("xpath",self.EMAIL, p_email, t)
 
-    def EnterPassw(self, p_password):
-        self.f.move_to_element("xpath",self.PASSWORD, t)
-        self.f.input_text("xpath",self.PASSWORD, p_password, t)
+    def CheckShippingTableRate(self):
+        self.f.click_on_element("xpath", self.SP_TableRate, t)
 
-    def ConfirmPassw(self, p_password):
-        self.f.move_to_element("xpath",self.CONFIRM_PASS, t)
-        self.f.input_text("xpath",self.CONFIRM_PASS, p_password, t)
+    def CheckShippingFixed(self):
+        self.f.click_on_element("xpath", self.SP_Fixed, t)
 
-    def PressButtonCreate(self):
-        self.f.move_on_element_and_click("xpath", self.CREATE_BUTTON, t)
-    """
+    def PressNext(self):
+        self.f.move_on_element_and_click("xpath", self.NEXT_BUTTON, t)
+

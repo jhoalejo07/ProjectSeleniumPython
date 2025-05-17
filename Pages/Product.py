@@ -19,7 +19,7 @@ class Product(Functions):
         self.JUNO_JACKET_SIZE_L = "//div[@id='option-label-size-143-item-169']"
         self.ADD_TO_CART_BTN = "//button[@id='product-addtocart-button']"
         self.SHOPPING_CART_BTN = "//a[contains(text(),'shopping cart')]"
-        self.JUNO_JACKET_COLOR_BLUE_id = "option-label-color-93-item-50"
+        self.JUNO_JACKET_COLOR_BLUE_id = "option-label-color-93-item-53"
         self.JUNO_JACKET_SIZE_M_id = "option-label-size-143-item-168"
         self.ADD_TO_CART_BTN_id = "product-addtocart-button"
 
