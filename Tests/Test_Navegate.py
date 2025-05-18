@@ -8,8 +8,7 @@ from ProjectSeleniumPython.Pages.CartPage import Cart
 from ProjectSeleniumPython.Pages.PlaceOrder import PlaceOrder
 from ProjectSeleniumPython.Pages.CheckoutShipping import Checkout_Shipping
 
-t = .2
-
+t: float = .2
 
 @pytest.fixture(scope='module')
 def setup_login_magento():
@@ -20,12 +19,12 @@ def setup_login_magento():
     f = Functions(p_driverPath)
     f.openBrowser("https://magento.softwaretestingboard.com/", t)
 
-    menu = Menu(f)
-    selProduct = SelectProduct(f)
-    product = Product(f)
-    cart = Cart(f)
-    checkout = Checkout_Shipping(f)
-    placeOrder = PlaceOrder(f)
+    menu = Menu(f, t)
+    selProduct = SelectProduct(f, t)
+    product = Product(f, t)
+    cart = Cart(f, t)
+    checkout = Checkout_Shipping(f, t)
+    placeOrder = PlaceOrder(f, t)
 
     print("Login into admin-demo.magento.com ")
     yield
@@ -33,14 +32,13 @@ def setup_login_magento():
 
 
 @pytest.mark.usefixtures("setup_login_magento")
-def test_navegate():
+def test_navigate():
     print("Opening magento")
-    menu.NavegateToWomenJacket()
-    selProduct.SelectJunoJacket()
+    menu.navigate_to_women_jacket()
+    selProduct.select_juno_jacket()
     product.select_juno_jacket_green_l()
-    # product.select_juno_jacket_blue_m() IT DOESN'T WORK BECAUSE THE BUTTONS DON'T HAVE ID they are by XPATH
-    cart.modifyQuantity(2)
-    cart.ProceedToCheckout()
+    cart.modify_quantity(2)
+    cart.Proceed_to_checkout()
     checkout.EnterFirstName("Pedro")
     checkout.EnterLastName("Pascal")
     checkout.EnterAddress("123 Main st")

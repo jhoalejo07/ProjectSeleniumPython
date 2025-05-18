@@ -31,13 +31,13 @@ class Functions:
         print("End of test")
         self.driver.close()
 
-    def openBrowser(self, p_URL, p_time):
+    def openBrowser(self, p_URL, p_time: float):
         """
         Opens a URL in the browser, maximizes the window, and waits.
 
         Args:
             p_URL (str): URL to open.
-            p_time (int): Time to wait after opening (in seconds).
+            p_time: float: Time to wait after opening (in seconds).
         """
         self.driver.get(p_URL)
         self.driver.maximize_window()
@@ -45,14 +45,14 @@ class Functions:
         print("Page open: " + str(p_URL))
         time.sleep(p_time)
 
-    def move_to_element(self, p_type, p_selector, p_time):
+    def move_to_element(self, p_type, p_selector, p_time: float):
         """
         Scrolls to and hovers over an element.
 
         Args:
             p_type (str): Type of selector ('xpath' or 'id').
             p_selector (str): Selector value.
-            p_time (int): Timeout in seconds.
+            p_time: float: Timeout in seconds.
         """
         try:
             if p_type == "xpath":
@@ -69,14 +69,14 @@ class Functions:
             print("It's not possible to move to the element, it's not available: " + p_selector)
             time.sleep(p_time)
 
-    def click_on_element(self, p_type, p_selector, p_time):
+    def click_on_element(self, p_type, p_selector, p_time: float):
         """
         Clicks on a web element after waiting for it to be clickable.
 
         Args:
             p_type (str): Type of selector ('xpath' or 'id').
             p_selector (str): Selector value.
-            p_time (int): Timeout in seconds.
+            p_time: float: Timeout in seconds.
         """
         try:
             if p_type == "xpath":
@@ -91,14 +91,14 @@ class Functions:
             print("It's not possible to click on the element, it's not available: " + p_selector)
             time.sleep(p_time)
 
-    def move_on_element_and_click(self, p_type, p_selector, p_time):
+    def move_on_element_and_click(self, p_type, p_selector, p_time: float):
         """
         Moves to an element and clicks on it.
 
         Args:
             p_type (str): Type of selector ('xpath' or 'id').
             p_selector (str): Selector value.
-            p_time (int): Timeout in seconds.
+            p_time: float: Timeout in seconds.
         """
         try:
             if p_type == "xpath":
@@ -119,7 +119,7 @@ class Functions:
             print("It's not possible to move and click on the element, it's not available: " + p_selector)
             time.sleep(p_time)
 
-    def Select_Combo(self, p_type, p_selector, p_type_sel, p_value, p_time):
+    def Select_Combo(self, p_type, p_selector, p_type_sel, p_value, p_time: float):
         """
         Selects an option from a dropdown.
 
@@ -128,7 +128,7 @@ class Functions:
             p_selector (str): Selector value.
             p_type_sel (str): Selection type ('Text', 'Value', or 'Index').
             p_value (str|int): Value to select (text, value, or index).
-            p_time (int): Timeout in seconds.
+            p_time: float: Timeout in seconds.
         """
         try:
             if p_type == "xpath":
@@ -154,7 +154,7 @@ class Functions:
         except TimeoutException:
             print("Element not available: " + p_selector)
 
-    def input_text(self, p_type, p_selector, p_text, p_time):
+    def input_text(self, p_type, p_selector, p_text, p_time: float):
         """
         Inputs text into a field.
 
@@ -162,7 +162,7 @@ class Functions:
             p_type (str): Type of selector ('xpath' or 'id').
             p_selector (str): Selector value.
             p_text (str): Text to input.
-            p_time (int): Timeout in seconds.
+            p_time: float : Timeout in seconds.
         """
         try:
             if p_type == "xpath":
@@ -178,14 +178,14 @@ class Functions:
             print("Element not available to insert text: " + p_selector)
             time.sleep(p_time)
 
-    def return_element(self, p_type, p_selector, p_time):
+    def return_element(self, p_type, p_selector, p_time: float):
         """
         Returns a web element, scrolling and moving to it.
 
         Args:
             p_type (str): Type of selector ('xpath' or 'id').
             p_selector (str): Selector value.
-            p_time (int): Timeout in seconds.
+            p_time: float: Timeout in seconds.
 
         Returns:
             WebElement: The located element, or None if not found.

@@ -1,73 +1,111 @@
-from selenium.webdriver.common.by import By
 from ProjectSeleniumPython.Pages.Functions import Functions
 
-t = .2
-class Checkout_Shipping(Functions):
 
+class Checkout_Shipping:
     """
-     Composition is generally preferred over inheritance for building page objects, as it leads to more flexible and
-      maintainable code. For that reason, an instance of Functions is passed to SelectProduct as a dependency.
+    Checkout_Shipping Class
+
+    This class automates interactions with the shipping step in an e-commerce checkout flow.
+    It uses composition to include the reusable 'Functions' utility class for performing
+    Selenium actions like clicking, sending keys, and selecting dropdown options.
+
+    Responsibilities:
+    - Fill out customer shipping information
+    - Select shipping method
+    - Proceed to the next step in the checkout process
+
+    Parameters:
+    - functions (Functions): An instance of the Functions class to perform Selenium actions
+    - t (float): Time delay used in all element interactions (for waits/synchronization)
     """
 
-    def __init__(self, functions_instance):
-        self.f = functions_instance  # Store the existing Functions instance
-        self.FIRST_NAME = "//input[contains(@name,'firstname')]"
-        self.LAST_NAME = "//input[contains(@name,'lastname')]"
-        self.ADDRESS = "//input[@name='street[0]']"
-        self.CITY = "//input[contains(@name,'city')]"
-        self.STATE_PROV = "//select[contains(@name,'region_id')]"
-        self.POSTALCODE = "//input[contains( @ name, 'postcode')]"
-        self.COUNTRY = "//select[contains(@name,'country_id')]"
-        self.PHONE = "//input[contains( @ name, 'telephone')]"
-        self.EMAIL = "(//input[contains(@id,'customer-email')])[1]"
-        self.SP_TableRate = "//input[contains(@aria-labelledby,'label_method_bestway_tablerate label_carrier_bestway_tablerate')]"
-        self.SP_Fixed ="//input[contains(@aria-labelledby,'label_method_flatrate_flatrate label_carrier_flatrate_flatrate')]"
-        self.NEXT_BUTTON = "//button[contains(@data-role,'opc-continue')]"
+    # Locators for the shipping form fields and controls
+    FIRST_NAME = "//input[contains(@name,'firstname')]"
+    LAST_NAME = "//input[contains(@name,'lastname')]"
+    ADDRESS = "//input[@name='street[0]']"
+    CITY = "//input[contains(@name,'city')]"
+    STATE_PROV = "//select[contains(@name,'region_id')]"
+    POSTALCODE = "//input[contains(@name, 'postcode')]"
+    COUNTRY = "//select[contains(@name,'country_id')]"
+    PHONE = "//input[contains(@name, 'telephone')]"
+    EMAIL = "(//input[contains(@id,'customer-email')])[1]"
+    SP_TableRate = "//input[contains(@aria-labelledby,'label_method_bestway_tablerate label_carrier_bestway_tablerate')]"
+    SP_Fixed = "//input[contains(@aria-labelledby,'label_method_flatrate_flatrate label_carrier_flatrate_flatrate')]"
+    NEXT_BUTTON = "//button[contains(@data-role,'opc-continue')]"
 
+    def __init__(self, functions: Functions, t: float):
+        """
+        Constructor for Checkout_Shipping
 
+        :param functions: Instance of Functions class for Selenium interactions
+        :param t: Float indicating wait/sleep time between actions
+        """
+        self.f = functions
+        self.t = t
 
     def EnterFirstName(self, p_firstName):
-        self.f.move_to_element("xpath", self.FIRST_NAME, t)
-        self.f.input_text("xpath",self.FIRST_NAME, p_firstName, t)
+        """Enter the customer's first name into the input field."""
+        self.f.move_to_element("xpath", self.FIRST_NAME, self.t)
+        self.f.input_text("xpath", self.FIRST_NAME, p_firstName, self.t)
 
     def EnterLastName(self, p_lastName):
-        self.f.move_to_element("xpath",self.LAST_NAME, t)
-        self.f.input_text("xpath",self.LAST_NAME, p_lastName, t)
+        """Enter the customer's last name into the input field."""
+        self.f.move_to_element("xpath", self.LAST_NAME, self.t)
+        self.f.input_text("xpath", self.LAST_NAME, p_lastName, self.t)
 
     def EnterAddress(self, p_address):
-        self.f.move_to_element("xpath",self.ADDRESS, t)
-        self.f.input_text("xpath",self.ADDRESS, p_address, t)
+        """Enter the customer's street address."""
+        self.f.move_to_element("xpath", self.ADDRESS, self.t)
+        self.f.input_text("xpath", self.ADDRESS, p_address, self.t)
 
     def EnterCity(self, p_city):
-        self.f.move_to_element("xpath",self.CITY, t)
-        self.f.input_text("xpath", self.CITY, p_city, t)
+        """Enter the customer's city."""
+        self.f.move_to_element("xpath", self.CITY, self.t)
+        self.f.input_text("xpath", self.CITY, p_city, self.t)
 
     def SelectStateProvince(self, p_type_sel, p_value):
-        self.f.move_to_element("xpath", self.STATE_PROV, t)
-        self.f.Select_Combo("xpath", self.STATE_PROV, p_type_sel, p_value, t)
+        """
+        Select a state or province from the dropdown.
+
+        :param p_type_sel: Type of selection (e.g., 'text', 'value', or 'index')
+        :param p_value: The value to select
+        """
+        self.f.move_to_element("xpath", self.STATE_PROV, self.t)
+        self.f.Select_Combo("xpath", self.STATE_PROV, p_type_sel, p_value, self.t)
 
     def EnterPostalCode(self, p_postalcode):
-        self.f.move_to_element("xpath",self.POSTALCODE, t)
-        self.f.input_text("xpath", self.POSTALCODE, p_postalcode, t)
+        """Enter the postal/zip code."""
+        self.f.move_to_element("xpath", self.POSTALCODE, self.t)
+        self.f.input_text("xpath", self.POSTALCODE, p_postalcode, self.t)
 
     def SelectCountry(self, p_type_sel, p_value):
-        self.f.move_to_element("xpath", self.COUNTRY, t)
-        self.f.Select_Combo("xpath", self.COUNTRY, p_type_sel, p_value, t)
+        """
+        Select a country from the dropdown.
+
+        :param p_type_sel: Type of selection (e.g., 'text', 'value', or 'index')
+        :param p_value: The value to select
+        """
+        self.f.move_to_element("xpath", self.COUNTRY, self.t)
+        self.f.Select_Combo("xpath", self.COUNTRY, p_type_sel, p_value, self.t)
 
     def EnterTelephone(self, p_telephone):
-        self.f.move_to_element("xpath",self.PHONE, t)
-        self.f.input_text("xpath", self.PHONE, p_telephone, t)
+        """Enter the customer's phone number."""
+        self.f.move_to_element("xpath", self.PHONE, self.t)
+        self.f.input_text("xpath", self.PHONE, p_telephone, self.t)
 
     def EnterEmail(self, p_email):
-        self.f.move_to_element("xpath",self.EMAIL, t)
-        self.f.input_text("xpath",self.EMAIL, p_email, t)
+        """Enter the customer's email address."""
+        self.f.move_to_element("xpath", self.EMAIL, self.t)
+        self.f.input_text("xpath", self.EMAIL, p_email, self.t)
 
     def CheckShippingTableRate(self):
-        self.f.click_on_element("xpath", self.SP_TableRate, t)
+        """Select the 'Table Rate' shipping option."""
+        self.f.click_on_element("xpath", self.SP_TableRate, self.t)
 
     def CheckShippingFixed(self):
-        self.f.click_on_element("xpath", self.SP_Fixed, t)
+        """Select the 'Fixed Rate' shipping option."""
+        self.f.click_on_element("xpath", self.SP_Fixed, self.t)
 
     def PressNext(self):
-        self.f.move_on_element_and_click("xpath", self.NEXT_BUTTON, t)
-
+        """Click the 'Next' button to proceed in the checkout process."""
+        self.f.move_on_element_and_click("xpath", self.NEXT_BUTTON, self.t)

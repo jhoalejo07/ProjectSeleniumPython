@@ -21,7 +21,7 @@ def setup_newcustomer_screen():
     fe = Funexcel()
     path_excel = "D://Projects//Projects//ProjectSeleniumPython//User_Data.xlsx"
 
-    newCustomer = CreateUsr(f)
+    newCustomer = CreateUsr(f, t)
 
     print("Enter into /customer/account/create/ ")
     yield
