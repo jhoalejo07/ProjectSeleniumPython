@@ -2,7 +2,6 @@ import pytest
 import random
 import string
 import allure
-from selenium.webdriver.common.by import By
 from ProjectSeleniumPython.Pages.Functions import Functions
 from ProjectSeleniumPython.Pages.CreateCustomer import CreateUsr
 from allure_commons.types import AttachmentType
@@ -12,35 +11,45 @@ t = .02
 
 
 @pytest.fixture(scope='function')
-def setup_newcustomer_screen():
-    global f, newCustomer, fe, path_excel
+def setup_new_customer_screen():
+    # global f, newCustomer, fe, path_excel
 
     f = Functions(r"C:\SeleniumDrivers\chromedriver.exe")
     f.openBrowser("https://magento.softwaretestingboard.com/customer/account/create/", t)
-
     fe = Funexcel()
     path_excel = "D://Projects//Projects//ProjectSeleniumPython//User_Data.xlsx"
 
     newCustomer = CreateUsr(f, t)
 
     print("Enter into /customer/account/create/ ")
-    yield
+    yield {
+        "functions": f,
+        "newCustomer": newCustomer,
+        "fe": fe,
+        "path_excel": path_excel,
+        "t": t
+    }
     print("log off from /customer/account/create/")
     f.teardown_function()
 
 
 @pytest.fixture(scope='function')
-def log_on_failure(request):
+def log_on_failure(setup_new_customer_screen, request):
     yield
     item = request.node
     if item.rep_call.failed:
+        f = setup_new_customer_screen["functions"]
         allure.attach(f.driver.get_screenshot_as_png(), name="Error", attachment_type=AttachmentType.PNG)
 
 
 @pytest.mark.negative
 @pytest.mark.usefixtures("log_on_failure")
-@pytest.mark.usefixtures("setup_newcustomer_screen")
-def test_negative_user_exist():
+def test_negative_user_exist(setup_new_customer_screen):
+    ctx = setup_new_customer_screen
+    newCustomer = ctx["newCustomer"]
+    fe = ctx["fe"]
+    path_excel = ctx["path_excel"]
+    f = ctx["functions"]
     try:
         newCustomer.EnterFirstName(fe.readData(path_excel, "magento_new_users", 2, 2))
         newCustomer.EnterLastName(fe.readData(path_excel, "magento_new_users", 2, 3))
@@ -49,9 +58,10 @@ def test_negative_user_exist():
         newCustomer.ConfirmPassw(fe.readData(path_excel, "magento_new_users", 2, 6))
         newCustomer.PressButtonCreate()
 
-        #text = f.Sel_by_Xpath("//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)'][contains(.,'There is already an account with this email address. If you are sure that it is your email address, click here to get your password and access your account.')]", t).text
         text = f.return_element("xpath",
-                                "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)'][contains(.,'There is already an account with this email address. If you are sure that it is your email address, click here to get your password and access your account.')]",
+                                "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)'][contains(.,"
+                                "'There is already an account with this email address. If you are sure that it is "
+                                "your email address, click here to get your password and access your account.')]",
                                 t).text
         allure.attach(f.driver.get_screenshot_as_png(), name="UserExist", attachment_type=AttachmentType.PNG)
 
@@ -59,14 +69,19 @@ def test_negative_user_exist():
         fe.writeData(path_excel, "magento_new_users", 2, 7, "Failed - That user hasn't been created")
         assert False, "That user hasn't been created"
 
-    assert text == "There is already an account with this email address. If you are sure that it is your email address, click here to get your password and access your account."
+    assert text == ("There is already an account with this email address. If you are sure that it is your email "
+                    "address, click here to get your password and access your account.")
     fe.writeData(path_excel, "magento_new_users", 2, 7, "Pass - That user exists")
 
 
 @pytest.mark.positive
 @pytest.mark.usefixtures("log_on_failure")
-@pytest.mark.usefixtures("setup_newcustomer_screen")
-def test_positive_create_user():
+def test_positive_create_user(setup_new_customer_screen):
+    ctx = setup_new_customer_screen
+    newCustomer = ctx["newCustomer"]
+    fe = ctx["fe"]
+    path_excel = ctx["path_excel"]
+    f = ctx["functions"]
     try:
         newCustomer.EnterFirstName(fe.readData(path_excel, "magento_new_users", 3, 2))
         newCustomer.EnterLastName(fe.readData(path_excel, "magento_new_users", 3, 3))
@@ -90,8 +105,12 @@ def test_positive_create_user():
 
 @pytest.mark.negative
 @pytest.mark.usefixtures("log_on_failure")
-@pytest.mark.usefixtures("setup_newcustomer_screen")
-def test_negative_First_and_last_name_long():
+def test_negative_First_and_last_name_long(setup_new_customer_screen):
+    ctx = setup_new_customer_screen
+    newCustomer = ctx["newCustomer"]
+    fe = ctx["fe"]
+    path_excel = ctx["path_excel"]
+    f = ctx["functions"]
     try:
         firstname = random_char(302)
         newCustomer.EnterFirstName(firstname)
@@ -101,7 +120,6 @@ def test_negative_First_and_last_name_long():
         newCustomer.EnterPassw(fe.readData(path_excel, "magento_new_users", 4, 5))
         newCustomer.ConfirmPassw(fe.readData(path_excel, "magento_new_users", 4, 6))
         newCustomer.PressButtonCreate()
-
 
         errorText = f.return_element("xpath", "//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']["
                                               "contains(.,'First Name is not valid!" + "\n" + "Last Name is not "
@@ -118,8 +136,12 @@ def test_negative_First_and_last_name_long():
 
 @pytest.mark.negative
 @pytest.mark.usefixtures("log_on_failure")
-@pytest.mark.usefixtures("setup_newcustomer_screen")
-def test_negative_First_name_long():
+def test_negative_First_name_long(setup_new_customer_screen):
+    ctx = setup_new_customer_screen
+    newCustomer = ctx["newCustomer"]
+    fe = ctx["fe"]
+    path_excel = ctx["path_excel"]
+    f = ctx["functions"]
     try:
         firstname = random_char(301)
         newCustomer.EnterFirstName(firstname)
@@ -142,8 +164,12 @@ def test_negative_First_name_long():
 
 @pytest.mark.negative
 @pytest.mark.usefixtures("log_on_failure")
-@pytest.mark.usefixtures("setup_newcustomer_screen")
-def test_negative_Last_name_long():
+def test_negative_Last_name_long(setup_new_customer_screen):
+    ctx = setup_new_customer_screen
+    newCustomer = ctx["newCustomer"]
+    fe = ctx["fe"]
+    path_excel = ctx["path_excel"]
+    f = ctx["functions"]
     try:
         lastname = random_char(301)
         newCustomer.EnterFirstName(fe.readData(path_excel, "magento_new_users", 6, 2))
@@ -167,8 +193,12 @@ def test_negative_Last_name_long():
 
 @pytest.mark.negative
 @pytest.mark.usefixtures("log_on_failure")
-@pytest.mark.usefixtures("setup_newcustomer_screen")
-def test_negative_incorrect_format_email():
+def test_negative_incorrect_format_email(setup_new_customer_screen):
+    ctx = setup_new_customer_screen
+    newCustomer = ctx["newCustomer"]
+    fe = ctx["fe"]
+    path_excel = ctx["path_excel"]
+    f = ctx["functions"]
     try:
         newCustomer.EnterFirstName(fe.readData(path_excel, "magento_new_users", 7, 2))
         newCustomer.EnterLastName(fe.readData(path_excel, "magento_new_users", 7, 3))
@@ -192,8 +222,12 @@ def test_negative_incorrect_format_email():
 
 @pytest.mark.negative
 @pytest.mark.usefixtures("log_on_failure")
-@pytest.mark.usefixtures("setup_newcustomer_screen")
-def test_negative_password_Strength():
+def test_negative_password_Strength(setup_new_customer_screen):
+    ctx = setup_new_customer_screen
+    newCustomer = ctx["newCustomer"]
+    fe = ctx["fe"]
+    path_excel = ctx["path_excel"]
+    f = ctx["functions"]
     try:
         newCustomer.EnterPassw(fe.readData(path_excel, "magento_new_users", 8, 5))
 
@@ -214,8 +248,12 @@ def test_negative_password_Strength():
 
 @pytest.mark.positive
 @pytest.mark.usefixtures("log_on_failure")
-@pytest.mark.usefixtures("setup_newcustomer_screen")
-def test_positive_password_Strength():
+def test_positive_password_Strength(setup_new_customer_screen):
+    ctx = setup_new_customer_screen
+    newCustomer = ctx["newCustomer"]
+    fe = ctx["fe"]
+    path_excel = ctx["path_excel"]
+    f = ctx["functions"]
     try:
 
         newCustomer.EnterPassw(fe.readData(path_excel, "magento_new_users", 9, 5))
@@ -237,8 +275,12 @@ def test_positive_password_Strength():
 
 @pytest.mark.negative
 @pytest.mark.usefixtures("log_on_failure")
-@pytest.mark.usefixtures("setup_newcustomer_screen")
-def test_negative_password_confirm_diff():
+def test_negative_password_confirm_diff(setup_new_customer_screen):
+    ctx = setup_new_customer_screen
+    newCustomer = ctx["newCustomer"]
+    fe = ctx["fe"]
+    path_excel = ctx["path_excel"]
+    f = ctx["functions"]
     try:
         newCustomer.EnterFirstName(fe.readData(path_excel, "magento_new_users", 10, 2))
         newCustomer.EnterLastName(fe.readData(path_excel, "magento_new_users", 10, 3))

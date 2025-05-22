@@ -8,13 +8,13 @@ from ProjectSeleniumPython.Pages.CartPage import Cart
 from ProjectSeleniumPython.Pages.PlaceOrder import PlaceOrder
 from ProjectSeleniumPython.Pages.CheckoutShipping import Checkout_Shipping
 
-t: float = .2
 
 @pytest.fixture(scope='module')
 def setup_login_magento():
-    global f, menu, selProduct, product, cart, newusr, checkout, placeOrder
+    # global f, menu, selProduct, product, cart, newusr, checkout, placeOrder
 
     p_driverPath = r"C:\SeleniumDrivers\chromedriver.exe"
+    t: float = .2
 
     f = Functions(p_driverPath)
     f.openBrowser("https://magento.softwaretestingboard.com/", t)
@@ -27,13 +27,31 @@ def setup_login_magento():
     placeOrder = PlaceOrder(f, t)
 
     print("Login into admin-demo.magento.com ")
-    yield
+    yield {
+        "functions": f,
+        "menu": menu,
+        "selProduct": selProduct,
+        "product": product,
+        "cart": cart,
+        "checkout": checkout,
+        "placeOrder": placeOrder,
+        "t": t
+    }
     print("log off from admin-demo.magento.com")
+    f.teardown_function()
 
 
-@pytest.mark.usefixtures("setup_login_magento")
-def test_navigate():
+# @pytest.mark.usefixtures("setup_login_magento")
+def test_navigate(setup_login_magento):
     print("Opening magento")
+    ctx = setup_login_magento
+    menu = ctx["menu"]
+    selProduct = ctx["selProduct"]
+    product = ctx["product"]
+    cart = ctx["cart"]
+    checkout = ctx["checkout"]
+    placeOrder = ctx["placeOrder"]
+
     menu.navigate_to_women_jacket()
     selProduct.select_juno_jacket()
     product.select_juno_jacket_green_l()
@@ -52,4 +70,3 @@ def test_navigate():
     checkout.PressNext()
     placeOrder.PressPlaceOrder()
     time.sleep(2)
-    f.teardown_function()
