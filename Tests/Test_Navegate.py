@@ -11,14 +11,22 @@ from ProjectSeleniumPython.Pages.CheckoutShipping import Checkout_Shipping
 
 @pytest.fixture(scope='module')
 def setup_login_magento():
-    # global f, menu, selProduct, product, cart, newusr, checkout, placeOrder
+    """
+    Fixture to set up the Selenium environment and initialize all page objects
+    before running the test case. It opens the browser and navigates to the
+    Magento demo site. Once the test module is completed, it closes the browser.
 
+    Yields:
+        dict: A dictionary containing initialized page object instances and delay time.
+    """
     p_driverPath = r"C:\SeleniumDrivers\chromedriver.exe"
-    t: float = .2
+    t: float = .2  # Default wait time for interactions
 
+    # Initialize the main Functions class (responsible for browser control)
     f = Functions(p_driverPath)
     f.openBrowser("https://magento.softwaretestingboard.com/", t)
 
+    # Initialize all the page object classes with shared Functions instance
     menu = Menu(f, t)
     selProduct = SelectProduct(f, t)
     product = Product(f, t)
@@ -37,13 +45,25 @@ def setup_login_magento():
         "placeOrder": placeOrder,
         "t": t
     }
-    print("log off from admin-demo.magento.com")
+    print("Log off from admin-demo.magento.com")
     f.teardown_function()
 
 
-# @pytest.mark.usefixtures("setup_login_magento")
 def test_navigate(setup_login_magento):
-    print("Opening magento")
+    """
+    Test to simulate a complete user purchase journey on the Magento demo site.
+
+    Steps:
+        1. Navigate to Women's Jackets category.
+        2. Select the Juno Jacket product.
+        3. Choose green color and size L.
+        4. Add 2 units of the product to the cart.
+        5. Proceed to checkout.
+        6. Fill in the shipping and contact information.
+        7. Select a fixed shipping method.
+        8. Continue to payment and place the order.
+    """
+    print("Opening Magento site and starting test flow...")
     ctx = setup_login_magento
     menu = ctx["menu"]
     selProduct = ctx["selProduct"]
@@ -51,12 +71,21 @@ def test_navigate(setup_login_magento):
     cart = ctx["cart"]
     checkout = ctx["checkout"]
     placeOrder = ctx["placeOrder"]
+    f = ctx["functions"]
+    t = ctx["t"]
 
+    # Navigate to the desired product category
     menu.navigate_to_women_jacket()
+
+    # Select product
     selProduct.select_juno_jacket()
     product.select_juno_jacket_green_l()
+
+    # Modify quantity and go to checkout
     cart.modify_quantity(2)
     cart.Proceed_to_checkout()
+
+    # Fill in shipping details
     checkout.EnterFirstName("Pedro")
     checkout.EnterLastName("Pascal")
     checkout.EnterAddress("123 Main st")
@@ -68,5 +97,13 @@ def test_navigate(setup_login_magento):
     checkout.EnterEmail("grogu@starwars.com")
     checkout.CheckShippingFixed()
     checkout.PressNext()
+
+    # Place the order
     placeOrder.PressPlaceOrder()
+
+    # Verifies that the order confirmation message appears after placing the order.
+    text = f.return_element("xpath", "//span[@class='base'][contains(.,'Thank you for your purchase!')]", t).text
+    assert text == "Thank you for your purchase!", "Order confirmation message not found"
+
+    # Pause to observe the result before closing browser
     time.sleep(2)
