@@ -1,6 +1,6 @@
 import pytest
 from selenium.webdriver.common.by import By
-from ProjectSeleniumPython.Pages.Functions import Functions
+from ProjectSeleniumPython.utils.Functions import Functions
 from ProjectSeleniumPython.Pages.SelectProduct import SelectProduct
 
 

@@ -2,10 +2,12 @@ import pytest
 import random  # Used to select random characters
 import string  # Contains pre-defined character sets (like ascii_letters)
 import allure
-from ProjectSeleniumPython.Pages.Functions import Functions
+from ProjectSeleniumPython.utils.Functions import Functions
+from ProjectSeleniumPython.utils.ExcelFunctions import Funexcel
 from ProjectSeleniumPython.Pages.CreateCustomer import CreateUsr
 from allure_commons.types import AttachmentType
-from ProjectSeleniumPython.Pages.ExcelFunctions import Funexcel
+
+
 
 # Time delay used throughout the test for waits
 t = .02
@@ -581,8 +583,7 @@ def test_negative_password_confirm_diff(setup_new_customer_screen):
     fe.writeData(path_excel, "magento_new_users", 10, 7, "Pass - Password and confirm are different")
 
 
-import random  # Used to select random characters
-import string  # Contains pre-defined character sets (like ascii_letters)
+
 
 
 def random_char(char_num):

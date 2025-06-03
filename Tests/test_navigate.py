@@ -1,6 +1,6 @@
 import pytest
 import time
-from ProjectSeleniumPython.Pages.Functions import Functions
+from ProjectSeleniumPython.utils.Functions import Functions
 from ProjectSeleniumPython.Pages.Menu import Menu
 from ProjectSeleniumPython.Pages.SelectProduct import SelectProduct
 from ProjectSeleniumPython.Pages.Product import Product

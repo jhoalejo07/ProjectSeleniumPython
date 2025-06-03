@@ -1,4 +1,4 @@
-from ProjectSeleniumPython.Pages.Functions import Functions
+from ProjectSeleniumPython.utils.Functions import Functions
 
 class Product:
     """
