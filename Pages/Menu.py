@@ -33,7 +33,7 @@ class Menu:
         )
         self.WOMEN_TOPS_JACKETS = "//a[@id='ui-id-11']/span[text()='Jackets']"
 
-    # METHODS: Here is the method to navigate_to_women_jacket fro example purpose, but for every menu option a method
+    # METHODS: Here is the method to navigate_to_women_jacket for example purpose, but for every menu option a method
     # should be created.
 
     def navigate_to_women_jacket(self):

@@ -39,6 +39,9 @@ class Functions:
             p_URL (str): URL to open.
             p_time: float: Time to wait after opening (in seconds).
         """
+        # self.driver.set_window_position(0, -1080)  # Secondary screen
+        # self.driver.set_window_position(0, 0)  # Primary screen
+        self.driver.set_window_size(1280, 720)
         self.driver.get(p_URL)
         self.driver.maximize_window()
         self.driver.implicitly_wait(5)

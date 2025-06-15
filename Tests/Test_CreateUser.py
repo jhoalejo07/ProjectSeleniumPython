@@ -7,8 +7,6 @@ from ProjectSeleniumPython.utils.ExcelFunctions import Funexcel
 from ProjectSeleniumPython.Pages.CreateCustomer import CreateUsr
 from allure_commons.types import AttachmentType
 
-
-
 # Time delay used throughout the test for waits
 t = .02
 
@@ -48,7 +46,7 @@ def log_on_failure(setup_new_customer_screen, request):
     yield
     item = request.node
     if item.rep_call.failed:
-        f = setup_new_customer_screen["functions"]
+        f = setup_new_customer_screen["functions"]  # To instantiate the driver
         # Attach screenshot to Allure report upon failure
         allure.attach(
             f.driver.get_screenshot_as_png(),
@@ -583,9 +581,6 @@ def test_negative_password_confirm_diff(setup_new_customer_screen):
     fe.writeData(path_excel, "magento_new_users", 10, 7, "Pass - Password and confirm are different")
 
 
-
-
-
 def random_char(char_num):
     """
     Generate a random string containing alphabetic characters (both uppercase and lowercase).
@@ -606,4 +601,3 @@ def random_char(char_num):
     # random.choice(string.ascii_letters) selects one random letter
     # ''.join(...) combines the list of characters into a single string
     return ''.join(random.choice(string.ascii_letters) for _ in range(char_num))
-
