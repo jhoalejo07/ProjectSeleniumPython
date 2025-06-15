@@ -86,15 +86,15 @@ def test_navigate(setup_login_magento):
     cart.Proceed_to_checkout()
 
     # Fill in shipping details
-    checkout.EnterFirstName("Pedro")
-    checkout.EnterLastName("Pascal")
+    checkout.EnterFirstName("John")
+    checkout.EnterLastName("Doe")
     checkout.EnterAddress("123 Main st")
     checkout.EnterCity("Saint John")
     checkout.EnterPostalCode("A1B 2C3")
     checkout.SelectCountry("Value", "CA")
     checkout.SelectStateProvince("Value", "70")
     checkout.EnterTelephone("9209621005")
-    checkout.EnterEmail("grogu@starwars.com")
+    checkout.EnterEmail("forever@gmail.com")
     checkout.CheckShippingFixed()
     checkout.PressNext()
 
